@@ -123,8 +123,8 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="lg:pl-64 min-h-screen">
-        <div className="p-6 lg:p-8 pt-16 lg:pt-6">
+      <main className="pl-64 min-h-screen">
+        <div className="p-6 lg:p-8 pt-16">
           {children}
         </div>
       </main>
