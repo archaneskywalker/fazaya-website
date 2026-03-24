@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, MessageCircle, Menu, Heart, User, Search } from "lucide-react";
+import { ShoppingCart, MessageCircle, Menu, Search, Heart, User } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "./CartContext";
 import { cn } from "@/lib/utils";
@@ -14,15 +14,8 @@ const navLinks = [
   { href: "/kontak", label: "Kontak" },
 ];
 
-const collectionLinks = [
-  { href: "/collections/serena-series", label: "Serena Series" },
-  { href: "/collections/jasmine-series", label: "Jasmine Series" },
-  { href: "/collections/bloom-series", label: "Bloom Series" },
-];
-
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isCollectionOpen, setIsCollectionOpen] = useState(false);
   const { itemCount } = useCart();
 
   useEffect(() => {
@@ -59,40 +52,6 @@ export function Navbar() {
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full" />
               </Link>
             ))}
-
-            {/* Collections Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setIsCollectionOpen(!isCollectionOpen)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              >
-                Koleksi
-                <svg className={`w-4 h-4 transition-transform ${isCollectionOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isCollectionOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setIsCollectionOpen(false)}
-                  />
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg z-20 py-2">
-                    {collectionLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                        onClick={() => setIsCollectionOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
           </nav>
 
           {/* Right Icons */}
@@ -138,18 +97,6 @@ export function Navbar() {
                       {link.label}
                     </Link>
                   ))}
-                  <div className="border-t pt-4">
-                    <p className="text-sm font-medium text-muted-foreground mb-2">Koleksi</p>
-                    {collectionLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
