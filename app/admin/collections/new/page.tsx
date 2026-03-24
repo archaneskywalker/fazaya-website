@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, Upload } from "lucide-react";
+import { X } from "lucide-react";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 export default function NewCollectionPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,37 +24,10 @@ export default function NewCollectionPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    setError("");
-
-    try {
-      const formDataUpload = new FormData();
-      formDataUpload.append("file", file);
-      formDataUpload.append("type", "collections");
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formDataUpload,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setFormData((prev) => ({ ...prev, image: data.url }));
-      } else {
-        setError(data.error || "Upload failed");
-      }
-    } catch {
-      setError("Upload failed. Please try again.");
-    } finally {
-      setUploading(false);
+  const handleUploadComplete = (res: any) => {
+    if (res && res.length > 0) {
+      setFormData((prev) => ({ ...prev, image: res[0].url }));
     }
-
-    e.target.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,20 +144,17 @@ export default function NewCollectionPage() {
               placeholder="Or paste image URL..."
             />
 
-            <label className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors cursor-pointer">
-              <Upload className="w-4 h-4" />
-              <span>{formData.image ? 'Replace Image' : 'Upload Image'}</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="hidden"
-                disabled={uploading}
-              />
-            </label>
-            {uploading && (
-              <span className="text-sm text-muted-foreground ml-2">Uploading...</span>
-            )}
+            <UploadDropzone
+              endpoint="collectionImage"
+              onClientUploadComplete={handleUploadComplete}
+              onUploadError={(error: Error) => {
+                setError(`Upload failed: ${error.message}`);
+              }}
+              appearance={{
+                button: "bg-primary text-primary-foreground hover:bg-primary/90",
+                allowedContent: "text-muted-foreground",
+              }}
+            />
           </div>
         </div>
 

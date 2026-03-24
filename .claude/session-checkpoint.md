@@ -1,4 +1,5 @@
 # Fazaya Website - Session Checkpoint
+claude --resume 790701a5-e042-45f2-b222-e28440426171
 
 **Date:** 2026-03-24
 **Project:** Fazaya Hijab E-commerce (Next.js 14)

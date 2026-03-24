@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, Plus, Upload, Image } from "lucide-react";
+import { X, Plus } from "lucide-react";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -10,7 +11,6 @@ export default function NewProductPage() {
   const [error, setError] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
-  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,45 +55,15 @@ export default function NewProductPage() {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleFileUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    isMain: boolean = false
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    setError("");
-
-    try {
-      const formDataUpload = new FormData();
-      formDataUpload.append("file", file);
-      formDataUpload.append("type", "products");
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formDataUpload,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        if (isMain) {
-          setFormData((prev) => ({ ...prev, image: data.url }));
-        } else {
-          setImages((prev) => [...prev, data.url]);
-        }
+  const handleUploadComplete = (res: any, isMain: boolean = false) => {
+    if (res && res.length > 0) {
+      const url = res[0].url;
+      if (isMain) {
+        setFormData((prev) => ({ ...prev, image: url }));
       } else {
-        setError(data.error || "Upload failed");
+        setImages((prev) => [...prev, url]);
       }
-    } catch {
-      setError("Upload failed. Please try again.");
-    } finally {
-      setUploading(false);
     }
-
-    // Reset file input
-    e.target.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -301,20 +271,17 @@ export default function NewProductPage() {
             </div>
 
             <div className="mt-2">
-              <label className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors cursor-pointer">
-                <Upload className="w-4 h-4" />
-                <span>{formData.image ? 'Replace Image' : 'Upload Image'}</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFileUpload(e, true)}
-                  className="hidden"
-                  disabled={uploading}
-                />
-              </label>
-              {uploading && (
-                <span className="text-sm text-muted-foreground ml-2">Uploading...</span>
-              )}
+              <UploadDropzone
+                endpoint="productImage"
+                onClientUploadComplete={(res: any) => handleUploadComplete(res, true)}
+                onUploadError={(error: Error) => {
+                  setError(`Upload failed: ${error.message}`);
+                }}
+                appearance={{
+                  button: "bg-primary text-primary-foreground hover:bg-primary/90",
+                  allowedContent: "text-muted-foreground",
+                }}
+              />
             </div>
           </div>
 
@@ -357,20 +324,20 @@ export default function NewProductPage() {
               </button>
             </div>
 
-            <label className="inline-flex items-center gap-2 px-4 py-2 border rounded-md font-medium hover:bg-muted transition-colors cursor-pointer">
-              <Upload className="w-4 h-4" />
-              <span>Upload Additional Image</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileUpload(e, false)}
-                className="hidden"
-                disabled={uploading}
-              />
-            </label>
-            {uploading && (
-              <span className="text-sm text-muted-foreground ml-2">Uploading...</span>
-            )}
+            <UploadDropzone
+              endpoint="productGallery"
+              onClientUploadComplete={(res: any) => {
+                const urls = res.map((r: any) => r.url);
+                setImages((prev) => [...prev, ...urls]);
+              }}
+              onUploadError={(error: Error) => {
+                setError(`Upload failed: ${error.message}`);
+              }}
+              appearance={{
+                button: "bg-primary text-primary-foreground hover:bg-primary/90",
+                allowedContent: "text-muted-foreground",
+              }}
+            />
           </div>
         </div>
 
