@@ -1,21 +1,76 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { formatIDR } from "@/lib/utils/format";
 import { useCart } from "@/components/CartContext";
-import { ShoppingCart, Trash2, Minus, Plus, MessageCircle } from "lucide-react";
+import { ShoppingCart, Trash2, Minus, Plus, MessageCircle, CheckCircle } from "lucide-react";
+import { CheckoutModal } from "@/components/CheckoutModal";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, total } = useCart();
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
-  const handleCheckout = () => {
+  const handleWhatsAppCheckout = () => {
     const message = `Halo Fazaya! 🌸 Saya ingin memesan:\n\n${items
       .map((i) => `- ${i.name} (${i.color}) x${i.quantity} = ${formatIDR(i.price * i.quantity)}`)
       .join("\n")}\n\nTotal: ${formatIDR(total)}\n\nMohon konfirmasi ketersediaan. Terima kasih!`;
     window.open(`https://wa.me/6282201626070?text=${encodeURIComponent(message)}`, "_blank");
   };
 
+  const handleWebsiteCheckout = async (formData: any) => {
+    const orderData = {
+      ...formData,
+      items: items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        color: item.color,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+      })),
+      subtotal: total,
+      total: total,
+    };
+
+    const res = await fetch("/api/admin/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create order");
+    }
+
+    // Clear cart and show success
+    clearCart();
+    setIsCheckoutOpen(false);
+    setOrderSuccess(true);
+  };
+
   if (items.length === 0) {
+    if (orderSuccess) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center py-20 max-w-md">
+            <CheckCircle className="w-24 h-24 mx-auto text-green-500 mb-6" />
+            <h1 className="font-heading text-3xl font-semibold mb-4">Pesanan Berhasil!</h1>
+            <p className="text-muted-foreground mb-8">
+              Terima kasih telah berbelanja. Kami akan segera menghubungi kamu melalui WhatsApp untuk konfirmasi pesanan.
+            </p>
+            <Link
+              href="/collections/all"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors"
+            >
+              Mulai Belanja Lagi
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center py-20">
@@ -154,8 +209,16 @@ export default function CartPage() {
               </p>
 
               <button
-                onClick={handleCheckout}
+                onClick={() => setIsCheckoutOpen(true)}
                 className="w-full bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 mb-3"
+              >
+                <CheckCircle className="w-5 h-5" />
+                Checkout via Website
+              </button>
+
+              <button
+                onClick={handleWhatsAppCheckout}
+                className="w-full bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2 mb-3"
               >
                 <MessageCircle className="w-5 h-5" />
                 Checkout via WhatsApp
@@ -171,6 +234,13 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        onSubmit={handleWebsiteCheckout}
+        total={total}
+      />
     </div>
   );
 }
