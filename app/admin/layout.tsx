@@ -45,7 +45,7 @@ export default function AdminLayout({
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -65,8 +65,8 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen w-64 bg-card border-r transition-transform",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          "fixed top-0 left-0 z-40 h-screen w-64 bg-card border-r transition-transform lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
@@ -123,8 +123,8 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="pl-64 min-h-screen">
-        <div className="p-6 lg:p-8 pt-16">
+      <main className="flex-1 lg:ml-64 min-h-screen">
+        <div className="p-6 lg:p-8 pt-16 lg:pt-6">
           {children}
         </div>
       </main>
