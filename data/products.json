@@ -1,0 +1,160 @@
+[
+  {
+    "id": "1",
+    "name": "Serena Series",
+    "slug": "serena-series",
+    "price": 70999,
+    "originalPrice": 89999,
+    "collection": "serena",
+    "colors": [
+      "Navy",
+      "Pink",
+      "Ungu"
+    ],
+    "image": "/uploads/products/1774342634846-y2dnuyls.jpeg",
+    "images": [
+      "https://picsum.photos/seed/serena/600/800",
+      "https://picsum.photos/seed/serena2/600/800",
+      "https://picsum.photos/seed/serena3/600/800",
+      "https://picsum.photos/seed/serena4/600/800"
+    ],
+    "isNew": true,
+    "isPromo": true,
+    "rating": 5,
+    "sold": 12,
+    "description": "Hijab segi empat dengan motif elegan, bahan voal premium anti-geser. Cocok untuk tampilan daily maupun formal.",
+    "material": "Voal Premium",
+    "care": "Cuci tangan dengan air dingin, jangan gunakan pemutih",
+    "size": "115cm x 115cm",
+    "updatedAt": "2026-03-24T08:57:17.252Z"
+  },
+  {
+    "id": "2",
+    "name": "Jasmine Series - Palette Hijau",
+    "slug": "jasmine-hijau",
+    "price": 50000,
+    "originalPrice": 65000,
+    "collection": "jasmine",
+    "colors": [
+      "Hijau Sage",
+      "Olive",
+      "Mint"
+    ],
+    "image": "/uploads/products/1774342661170-k54x59dg.jpeg",
+    "images": [
+      "https://picsum.photos/seed/jasmine-green/600/800",
+      "https://picsum.photos/seed/jasmine-green2/600/800"
+    ],
+    "isNew": true,
+    "isPromo": true,
+    "rating": 5,
+    "sold": 1,
+    "description": "Hijab segi empat polos premium dengan warna-warna pilihan aesthetic. Bahan lembut dan tidak mudah kusut.",
+    "material": "Polyester Premium",
+    "care": "Machine wash cold, hang dry",
+    "size": "115cm x 115cm",
+    "updatedAt": "2026-03-24T08:57:44.158Z"
+  },
+  {
+    "id": "3",
+    "name": "Jasmine Series - Palette Pink",
+    "slug": "jasmine-pink",
+    "price": 50000,
+    "originalPrice": 65000,
+    "collection": "jasmine",
+    "colors": [
+      "Dusty Pink",
+      "Blush",
+      "Rose"
+    ],
+    "image": "https://picsum.photos/seed/jasmine-pink/600/800",
+    "images": [
+      "https://picsum.photos/seed/jasmine-pink/600/800",
+      "https://picsum.photos/seed/jasmine-pink2/600/800"
+    ],
+    "isNew": true,
+    "isPromo": true,
+    "rating": null,
+    "sold": 0,
+    "description": "Hijab segi empat polos premium dengan palette pink aesthetic. Warna soft dan feminine, perfect untuk outfit sehari-hari.",
+    "material": "Polyester Premium",
+    "care": "Machine wash cold, hang dry",
+    "size": "115cm x 115cm"
+  },
+  {
+    "id": "4",
+    "name": "Bloom Series",
+    "slug": "bloom-series",
+    "price": 60500,
+    "originalPrice": 75000,
+    "collection": "bloom",
+    "colors": [
+      "Mint",
+      "Peach",
+      "Lavender"
+    ],
+    "image": "https://picsum.photos/seed/bloom/600/800",
+    "images": [
+      "https://picsum.photos/seed/bloom/600/800",
+      "https://picsum.photos/seed/bloom2/600/800"
+    ],
+    "isNew": true,
+    "isPromo": true,
+    "rating": null,
+    "sold": 1,
+    "description": "Hijab segi empat motif bunga lembut, cocok untuk tampilan feminine dan elegant. Bahan premium dengan printing tajam.",
+    "material": "Voal Printing",
+    "care": "Hand wash recommended, do not bleach",
+    "size": "115cm x 115cm"
+  },
+  {
+    "id": "5",
+    "name": "Jasmine Series - Palette Biru",
+    "slug": "jasmine-biru",
+    "price": 50000,
+    "collection": "jasmine",
+    "colors": [
+      "Navy",
+      "Baby Blue",
+      "Dusty Blue"
+    ],
+    "image": "https://picsum.photos/seed/jasmine-blue/600/800",
+    "images": [
+      "https://picsum.photos/seed/jasmine-blue/600/800",
+      "https://picsum.photos/seed/jasmine-blue2/600/800"
+    ],
+    "isNew": false,
+    "isPromo": false,
+    "rating": null,
+    "sold": 0,
+    "description": "Hijab segi empat polos premium dengan palette biru aesthetic. Warna tenang yang cocok untuk segala ocasi.",
+    "material": "Polyester Premium",
+    "care": "Machine wash cold, hang dry",
+    "size": "115cm x 115cm"
+  },
+  {
+    "id": "6",
+    "name": "Jasmine Series - Palette Coklat",
+    "slug": "jasmine-coklat",
+    "price": 50000,
+    "collection": "jasmine",
+    "colors": [
+      "Coklat Susu",
+      "Mocca",
+      "Cream"
+    ],
+    "image": "https://picsum.photos/seed/jasmine-brown/600/800",
+    "images": [
+      "https://picsum.photos/seed/jasmine-brown/600/800",
+      "https://picsum.photos/seed/jasmine-brown2/600/800"
+    ],
+    "isNew": false,
+    "isPromo": false,
+    "rating": null,
+    "sold": 0,
+    "description": "Hijab segi empat polos premium dengan palette coklat aesthetic. Earth tone yang timeless dan versatile.",
+    "material": "Polyester Premium",
+    "care": "Machine wash cold, hang dry",
+    "size": "115cm x 115cm"
+  }
+]

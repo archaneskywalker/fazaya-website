@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Serena Series",
+    "slug": "serena-series",
+    "description": "Motif elegan untuk tampilan sophisticated",
+    "image": "https://picsum.photos/seed/serena-collection/400/400",
+    "productCount": 6
+  },
+  {
+    "name": "Jasmine Series",
+    "slug": "jasmine-series",
+    "description": "Polos premium dengan warna aesthetic",
+    "image": "https://picsum.photos/seed/jasmine-collection/400/400",
+    "productCount": 16
+  },
+  {
+    "name": "Bloom Series",
+    "slug": "bloom-series",
+    "description": "Motif bunga feminine dan charming",
+    "image": "https://picsum.photos/seed/bloom-collection/400/400",
+    "productCount": 8
+  }
+]

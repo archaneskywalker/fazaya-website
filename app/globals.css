@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+@layer base {
+  :root {
+    --background: #FDFAF7;
+    --foreground: #2D2620;
+    --card: #FFFFFF;
+    --card-foreground: #2D2620;
+    --popover: #FFFFFF;
+    --popover-foreground: #2D2620;
+    --primary: #C4816A;
+    --primary-foreground: #FFFFFF;
+    --secondary: #8BA89F;
+    --secondary-foreground: #FFFFFF;
+    --muted: #F5EFE9;
+    --muted-foreground: #9B8E85;
+    --accent: #E8D5C4;
+    --accent-foreground: #2D2620;
+    --destructive: #C44D4D;
+    --destructive-foreground: #FFFFFF;
+    --border: #E8DDD5;
+    --input: #E8DDD5;
+    --ring: #C4816A;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: #1A1512;
+    --foreground: #F5EFE9;
+    --card: #2D2620;
+    --card-foreground: #F5EFE9;
+    --popover: #2D2620;
+    --popover-foreground: #F5EFE9;
+    --primary: #C4816A;
+    --primary-foreground: #FFFFFF;
+    --secondary: #8BA89F;
+    --secondary-foreground: #FFFFFF;
+    --muted: #3D3530;
+    --muted-foreground: #9B8E85;
+    --accent: #4A3F35;
+    --accent-foreground: #F5EFE9;
+    --destructive: #8B2E2E;
+    --destructive-foreground: #FFFFFF;
+    --border: #3D3530;
+    --input: #3D3530;
+    --ring: #C4816A;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  html {
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer components {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
