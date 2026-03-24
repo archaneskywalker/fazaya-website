@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatIDR } from "@/lib/utils/format";
-import { Check, X } from "lucide-react";
+import { Check, X, Trash2 } from "lucide-react";
 
 interface Order {
   id: string;
@@ -93,6 +93,38 @@ export default function AdminOrdersPage() {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
 
+  const handleDeleteOrder = async (orderId: string) => {
+    if (!confirm(`Delete order ${orderId}? This cannot be undone.`)) return;
+
+    try {
+      const res = await fetch(`/api/admin/orders?id=${orderId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      }
+    } catch (error) {
+      console.error("Failed to delete order:", error);
+    }
+  };
+
+  const handleClearAllOrders = async () => {
+    if (!confirm("Clear ALL orders? This cannot be undone. Make sure you have backed up any important data.")) return;
+
+    try {
+      const res = await fetch("/api/admin/orders", {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setOrders([]);
+      }
+    } catch (error) {
+      console.error("Failed to clear orders:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -103,11 +135,21 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-heading text-3xl font-semibold">Orders</h1>
-        <p className="text-muted-foreground mt-1">
-          Manage and track customer orders
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-heading text-3xl font-semibold">Orders</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage and track customer orders
+          </p>
+        </div>
+        {orders.length > 0 && (
+          <button
+            onClick={handleClearAllOrders}
+            className="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition-colors"
+          >
+            Clear All Orders
+          </button>
+        )}
       </div>
 
       <div className="bg-card border rounded-lg overflow-hidden">
@@ -134,6 +176,13 @@ export default function AdminOrdersPage() {
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => handleDeleteOrder(order.id)}
+                      className="p-2 text-muted-foreground hover:text-red-500 transition-colors"
+                      title="Delete order"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                     <span
                       className={`px-3 py-1 ${getStatusColor(order.orderStatus)} text-xs rounded-full border`}
                     >

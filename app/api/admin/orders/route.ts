@@ -62,3 +62,30 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  const token = request.cookies.get('admin-token')?.value;
+  if (!token || !verifyToken(token)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const orderId = searchParams.get('id');
+
+    if (orderId) {
+      // Delete specific order
+      const orders: any[] = readJSON('orders.json');
+      const filtered = orders.filter((o) => o.id !== orderId);
+      writeJSON('orders.json', filtered);
+      return NextResponse.json({ success: true });
+    } else {
+      // Clear all orders
+      writeJSON('orders.json', []);
+      return NextResponse.json({ success: true, message: 'All orders cleared' });
+    }
+  } catch (error) {
+    console.error('Orders DELETE error:', error);
+    return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
+  }
+}

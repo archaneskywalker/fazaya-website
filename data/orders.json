@@ -23,9 +23,38 @@
     "total": 70999,
     "paymentMethod": "transfer",
     "paymentStatus": "pending",
-    "orderStatus": "pending",
+    "orderStatus": "processing",
     "notes": "",
     "createdAt": "2026-03-24T17:42:37.575Z",
-    "updatedAt": "2026-03-24T17:42:37.575Z"
+    "updatedAt": "2026-03-24T17:52:47.373Z"
+  },
+  {
+    "id": "ORD-1774374859826",
+    "customerName": "daffa",
+    "email": "daffa@tutu.com",
+    "phone": "081567456789",
+    "address": "Thamrin dan sekitarnya",
+    "city": "Semarang",
+    "province": "Jateng",
+    "postalCode": "50147",
+    "items": [
+      {
+        "id": "2",
+        "name": "Jasmine Series - Palette Hijau",
+        "color": "Hijau Sage",
+        "price": 50000,
+        "quantity": 1,
+        "image": "https://picsum.photos/seed/jasmine-green/600/800"
+      }
+    ],
+    "subtotal": 50000,
+    "shippingCost": 0,
+    "total": 50000,
+    "paymentMethod": "qris",
+    "paymentStatus": "pending",
+    "orderStatus": "cancelled",
+    "notes": "",
+    "createdAt": "2026-03-24T17:54:19.826Z",
+    "updatedAt": "2026-03-24T17:54:30.277Z"
   }
 ]
