@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "id": "ORD-1774374157575",
+    "customerName": "Oscar",
+    "email": "oscario@tukituki.xyz",
+    "phone": "08143217654",
+    "address": "Ngaliyan dan sekitarnya",
+    "city": "Semarang",
+    "province": "Jateng",
+    "postalCode": "50183",
+    "items": [
+      {
+        "id": "1",
+        "name": "Serena Series",
+        "color": "Navy",
+        "price": 70999,
+        "quantity": 1,
+        "image": "https://picsum.photos/seed/serena/600/800"
+      }
+    ],
+    "subtotal": 70999,
+    "shippingCost": 0,
+    "total": 70999,
+    "paymentMethod": "transfer",
+    "paymentStatus": "pending",
+    "orderStatus": "pending",
+    "notes": "",
+    "createdAt": "2026-03-24T17:42:37.575Z",
+    "updatedAt": "2026-03-24T17:42:37.575Z"
+  }
+]
