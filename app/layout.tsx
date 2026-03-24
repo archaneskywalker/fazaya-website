@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { PromoBar } from "@/components/PromoBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -45,7 +44,6 @@ export default function RootLayout({
     <html lang="id" className={cn(dmSans.variable, cormorantGaramond.variable)}>
       <body className="antialiased min-h-screen flex flex-col">
         <CartProvider>
-          <PromoBar />
           <Navbar />
           <main className="flex-1">
             {children}
