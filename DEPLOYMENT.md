@@ -5,7 +5,7 @@
 ### Step 1: Buat Repository di GitHub
 
 1. Buka https://github.com/new
-2. Nama repository: `fazaya-website-next`
+2. Nama repository: `fazaya-website`
 3. Pilih **Private** (recommended) atau Public
 4. **JANGAN** centang "Add README", ".gitignore", atau license
 5. Klik **Create repository**
@@ -15,7 +15,7 @@
 Copy command dari GitHub, atau jalankan ini (ganti `USERNAME-GITHUB` dengan username GitHub kamu):
 
 ```bash
-git remote add origin https://github.com/USERNAME-GITHUB/fazaya-website-next.git
+git remote add origin https://github.com/USERNAME-GITHUB/fazaya-website.git
 git branch -M master
 git push -u origin master
 ```
@@ -25,7 +25,7 @@ git push -u origin master
 1. Buka https://vercel.com/dashboard
 2. Login dengan akun GitHub
 3. Klik **"Add New Project"**
-4. Pilih repository `fazaya-website-next`
+4. Pilih repository `fazaya-website`
 5. Klik **"Import"**
 
 ### Step 4: Setting Environment Variables (PENTING!)
@@ -39,6 +39,14 @@ Di halaman "Configure Project" di Vercel:
 |------|-------|--------|
 | `ADMIN_PASSWORD` | Password untuk login admin | `fazaya2026secure` |
 | `JWT_SECRET` | Random secret key | `super-secret-key-change-this-abc123xyz` |
+| `UPLOADTHING_SECRET` | API key dari Uploadthing | `sk_test_xxx...` |
+| `UPLOADTHING_APP_ID` | App ID dari Uploadthing | `your-app-id` |
+
+**Cara mendapatkan Uploadthing keys:**
+1. Buka https://uploadthing.com/dashboard
+2. Login/signup dengan GitHub
+3. Buat project baru
+4. Copy **API Key** dan **App ID** ke environment variables
 
 3. Klik **"Deploy"**
 
@@ -46,8 +54,8 @@ Di halaman "Configure Project" di Vercel:
 
 Setelah deploy selesai:
 
-- **Website URL**: `https://fazaya-website-next.vercel.app`
-- **Admin Login**: `https://fazaya-website-next.vercel.app/admin/login`
+- **Website URL**: `https://fazaya-website.vercel.app`
+- **Admin Login**: `https://fazaya-website.vercel.app/admin/login`
 - **Password**: Sesuai `ADMIN_PASSWORD` yang kamu set di Step 4
 
 ---
@@ -78,13 +86,15 @@ Setelah website online, kamu bisa:
 1. Login ke `/admin/login` dengan password yang sudah diset
 2. Manage Products: Add, Edit, Delete
 3. Manage Collections: Add, Edit, Delete
-4. Upload gambar langsung dari dashboard
+4. **Upload gambar** langsung dari dashboard (disimpan di cloud dengan Uploadthing)
 
-### Catatan Penting
+### Upload Gambar
 
-- Gambar yang di-upload disimpan di `/public/uploads/`
-- Data disimpan di `/data/` (products.json, collections.json, orders.json)
-- Untuk backup data, download file dari GitHub atau Vercel
+Dengan Uploadthing, kamu bisa:
+- Upload gambar dari komputer
+- Upload foto langsung dari camera HP
+- Gambar tersimpan permanen di cloud
+- Tidak perlu hosting file terpisah
 
 ---
 
