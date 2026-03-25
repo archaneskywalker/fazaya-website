@@ -1,5 +1,8 @@
+"use client";
+
 import type { Metadata } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
@@ -40,16 +43,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
+
   return (
     <html lang="id" className={cn(dmSans.variable, cormorantGaramond.variable)}>
       <body className="antialiased min-h-screen flex flex-col">
         <CartProvider>
-          <Navbar />
+          {!isAdminRoute && <Navbar />}
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
-          <WhatsAppButton />
+          {!isAdminRoute && <Footer />}
+          {!isAdminRoute && <WhatsAppButton />}
         </CartProvider>
       </body>
     </html>
