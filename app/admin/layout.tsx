@@ -118,8 +118,8 @@ export default function AdminLayout({
       )}
 
       {/* Main Content */}
-      <main className="pl-[256px] min-h-screen">
-        <div className="p-6 lg:p-8">
+      <main className="min-h-screen">
+        <div className="pl-[280px] pr-6 lg:pr-8 py-6 lg:py-8">
           {children}
         </div>
       </main>
