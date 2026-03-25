@@ -122,19 +122,20 @@ export default function AdminLayout({
         />
       )}
 
-      {/* Toggle Sidebar Button - Only show when sidebar is closed */}
-      {!sidebarOpen && (
-        <button
-          onClick={() => setSidebarOpen(true)}
-          className="fixed top-20 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
-      )}
-
       {/* Main Content */}
       <main className="min-h-screen">
-        <div className="p-6 lg:p-8 pt-16">
+        {/* Toggle Sidebar Button - Fixed beside logo */}
+        <div className="fixed top-6 left-4 z-50 flex items-center gap-3">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <img src="/logo.png" alt="Fazaya" className="w-10 h-10" />
+        </div>
+
+        <div className="p-6 lg:p-8 pt-20">
           {children}
         </div>
       </main>
