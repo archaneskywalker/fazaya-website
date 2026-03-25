@@ -117,7 +117,7 @@ export default function AdminLayout({
       {/* Toggle Sidebar Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
+        className="fixed top-20 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
       >
         <Menu className="w-5 h-5" />
       </button>
