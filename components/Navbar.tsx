@@ -81,7 +81,7 @@ export function Navbar() {
 
             {/* Mobile Menu */}
             <Sheet>
-              <SheetTrigger className="md:hidden">
+              <SheetTrigger asChild className="md:hidden">
                 <button className="p-2 hover:bg-muted rounded-full transition-colors">
                   <Menu className="w-5 h-5" />
                 </button>
