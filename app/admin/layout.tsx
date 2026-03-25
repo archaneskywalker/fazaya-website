@@ -54,12 +54,20 @@ export default function AdminLayout({
         )}
       >
         <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="px-6 py-4 border-b">
+          {/* Logo with Close Button */}
+          <div className="px-6 py-4 border-b flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-3">
               <img src="/logo.png" alt="Fazaya" className="w-10 h-10" />
               <span className="font-heading text-xl font-semibold">Admin</span>
             </Link>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1 hover:bg-muted rounded-md"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
           {/* Navigation */}
@@ -114,13 +122,15 @@ export default function AdminLayout({
         />
       )}
 
-      {/* Toggle Sidebar Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-20 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
+      {/* Toggle Sidebar Button - Only show when sidebar is closed */}
+      {!sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="fixed top-20 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
 
       {/* Main Content */}
       <main className="min-h-screen">
