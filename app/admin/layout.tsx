@@ -47,8 +47,13 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 z-30 h-screen w-64 bg-card border-r">
-        <div className="flex flex-col h-full pt-16 lg:pt-6">
+      <aside
+        className={cn(
+          "fixed top-0 left-0 z-40 h-screen w-64 bg-card border-r transition-transform",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="px-6 py-4 border-b">
             <Link href="/admin" className="flex items-center gap-3">
@@ -101,25 +106,25 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
-
       {/* Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/50 z-30"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
+      {/* Toggle Sidebar Button */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
       {/* Main Content */}
       <main className="min-h-screen">
-        <div className="pl-[280px] pr-6 lg:pr-8 py-6 lg:py-8">
+        <div className="p-6 lg:p-8 pt-16">
           {children}
         </div>
       </main>
