@@ -1,14 +1,12 @@
-"use client";
-
 import type { Metadata } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
-import { usePathname } from "next/navigation";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CartProvider } from "@/components/CartContext";
+import { SiteWrapper } from "@/components/SiteWrapper";
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -43,19 +41,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith('/admin');
-
   return (
     <html lang="id" className={cn(dmSans.variable, cormorantGaramond.variable)}>
       <body className="antialiased min-h-screen flex flex-col">
         <CartProvider>
-          {!isAdminRoute && <Navbar />}
-          <main className="flex-1">
+          <SiteWrapper>
             {children}
-          </main>
-          {!isAdminRoute && <Footer />}
-          {!isAdminRoute && <WhatsAppButton />}
+          </SiteWrapper>
         </CartProvider>
       </body>
     </html>
