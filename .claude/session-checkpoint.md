@@ -1,47 +1,73 @@
 # Fazaya Website - Session Checkpoint
 claude --resume 790701a5-e042-45f2-b222-e28440426171
 
-**Date:** 2026-03-24
+**Date:** 2026-03-25
 **Project:** Fazaya Hijab E-commerce (Next.js 14)
+**Repo:** https://github.com/archaneskywalker/fazaya-website
 
 ---
 
-## Admin Dashboard - COMPLETED
+## Completed in This Session
 
-A full-featured admin dashboard has been created for managing products, collections, orders, and analytics.
+### 1. Working Filters on Collections Page ✅
+**File:** `app/collections/all/page.tsx`
 
-### Features Implemented
+Full-featured filter system implemented:
+- **Filter by Collection/Category** - Checkboxes for each collection
+- **Filter by Color** - Checkboxes for colors (Black, White, Blue, etc.)
+- **Filter by Price Range** - Radio buttons:
+  - Di bawah Rp200.000
+  - Rp200.000 - Rp300.000
+  - Di atas Rp300.000
+- **Filter by Sale Status** - Toggle "Sedang Diskon"
 
-#### 1. Authentication
-- Simple password-based login at `/admin/login`
-- JWT token-based session management
-- Protected routes via middleware
-- **Default password:** `fazaya2026` (change in `.env.local`)
+Features:
+- Accordion-style expandable filter sections
+- Active filter badges with quick remove (×)
+- "Clear all" button to reset all filters
+- Mobile-responsive with overlay drawer
+- Filter badge count on mobile button
 
-#### 2. Product Management (CRUD)
-- **View all products** - `/admin/products`
-- **Add new product** - `/admin/products/new`
-- **Edit product** - `/admin/products/[id]/edit`
-- **Delete product** - Via product list
-- Fields: name, slug, price, originalPrice, collection, colors, images, description, material, care, size, rating, sold, isNew, isPromo
+### 2. Admin Layout Fix ✅
+**File:** `app/admin/layout.tsx`
 
-#### 3. Collection Management (CRUD)
-- **View all collections** - `/admin/collections`
-- **Add new collection** - `/admin/collections/new`
-- **Edit collection** - `/admin/collections/[id]/edit`
-- **Delete collection** - Via collection list
-- Fields: name, slug, description, image
+Fixed sidebar overlapping content issue:
+- Main content uses `ml-64` to clear fixed sidebar
+- Sidebar content has `pt-16` to prevent being cut off at top
+- Proper z-index layering (sidebar z-30, mobile button z-50, overlay z-40)
 
-#### 4. Orders Management
-- **View all orders** - `/admin/orders`
-- Order list with status, customer info, total
+### 3. Previous Session Work (Already Completed)
 
-#### 5. Analytics Dashboard
-- **Analytics page** - `/admin/analytics`
-- Key metrics: Total Revenue, Orders, Products, Avg Order Value
-- Top selling products list
+#### Checkout System via Website ✅
+**Files:** `app/keranjang/page.tsx`, `components/CheckoutModal.tsx`
+- "Checkout via Website" button added to cart page
+- Form captures customer info, shipping address, payment method
+- Orders saved to `data/orders.json`
+- Success page with order confirmation
 
-### File Structure Added
+#### Order Management ✅
+**File:** `app/admin/orders/page.tsx`
+- Accept/Cancel buttons for pending orders
+- Order status updates (pending → processing → shipped → delivered)
+- Delete individual orders
+- Clear all orders button
+
+#### Image Upload with Uploadthing ✅
+**Files:** `lib/uploadthing-server.ts`, `app/api/uploadthing/route.ts`
+- Cloud image storage (works on Vercel)
+- UploadDropzone component on admin forms
+- Supports camera upload on mobile
+
+#### Promo Bar Removed ✅
+- Removed from `app/layout.tsx`
+
+#### Duplicate Navigation Removed ✅
+- Removed Koleksi dropdown from Navbar
+- Single "Koleksi" link to `/collections/all`
+
+---
+
+## Current File Structure
 
 ```
 fazaya-website-next/
@@ -51,86 +77,88 @@ fazaya-website-next/
 │   └── orders.json              # Order data (writable)
 ├── lib/
 │   ├── storage.ts               # JSON file read/write utilities
-│   └── admin-auth.ts            # Password/JWT utilities
+│   ├── admin-auth.ts            # JWT authentication
+│   ├── uploadthing-server.ts    # Uploadthing router config
+│   └── uploadthing.ts           # UploadButton/UploadDropzone components
+├── components/
+│   ├── CheckoutModal.tsx        # Checkout form modal
+│   ├── CartContext.tsx          # Cart state management
+│   └── ...
 ├── app/
 │   ├── admin/
 │   │   ├── login/page.tsx       # Login page
 │   │   ├── layout.tsx           # Admin layout with sidebar
-│   │   ├── page.tsx             # Dashboard overview
-│   │   ├── products/
-│   │   │   ├── page.tsx         # Product list
-│   │   │   ├── new/page.tsx     # Add product form
-│   │   │   └── [id]/edit/page.tsx  # Edit product
-│   │   ├── collections/
-│   │   │   ├── page.tsx         # Collection list
-│   │   │   ├── new/page.tsx     # Add collection
-│   │   │   └── [id]/edit/page.tsx  # Edit collection
-│   │   ├── orders/page.tsx      # Orders list
-│   │   └── analytics/page.tsx   # Analytics dashboard
-│   └── api/admin/
-│       ├── auth/
-│       │   ├── login/route.ts   # Login endpoint
-│       │   └── verify/route.ts  # Verify session
-│       ├── products/route.ts    # GET/POST products
-│       ├── products/[id]/route.ts  # GET/PUT/DELETE
-│       ├── collections/route.ts
-│       ├── collections/[id]/route.ts
-│       ├── orders/route.ts
-│       ├── analytics/route.ts
-│       └── stats/route.ts
+│   │   ├── page.tsx             # Dashboard
+│   │   ├── products/            # Product CRUD
+│   │   ├── collections/         # Collection CRUD
+│   │   ├── orders/page.tsx      # Orders with accept/cancel
+│   │   └── analytics/page.tsx   # Analytics
+│   ├── api/admin/               # Admin API routes
+│   ├── api/uploadthing/         # Uploadthing endpoint
+│   ├── collections/all/page.tsx # All products with filters
+│   ├── keranjang/page.tsx       # Cart with checkout
+│   └── ...
 └── middleware.ts                # Protect admin routes
 ```
 
-### Public API Endpoints (for live data)
-- `GET /api/products` - Get all products from JSON
-- `GET /api/collections` - Get all collections from JSON
+---
 
-### Environment Variables (`.env.local`)
+## Environment Variables (`.env.local`)
+
 ```
 ADMIN_PASSWORD=fazaya2026
-JWT_SECRET=super-secret-jwt-key-change-this-in-production-abc123xyz
+JWT_SECRET=super-secret-jwt-key-change-this-in-production
+UPLOADTHING_SECRET=sk_live_xxx
+UPLOADTHING_APP_ID=xxx
 ```
 
-### Build Status
-✅ Build successful - All pages compiled without errors
+---
+
+## Admin Dashboard Features
+
+| Feature | Status |
+|---------|--------|
+| Login/Logout | ✅ |
+| Product CRUD | ✅ |
+| Collection CRUD | ✅ |
+| Order Management | ✅ (Accept/Cancel/Delete) |
+| Analytics | ✅ |
+| Image Upload (Cloud) | ✅ (Uploadthing) |
 
 ---
 
-## Previous Work (Preserved)
+## Public Features
 
-### Logo Updates
-- Image logo (`/logo.png`) used across all components
-- `w-auto` to preserve aspect ratio (no compression)
-- No `rounded-full` (original shape preserved)
-
-### Collections Page Redesign
-- Left sidebar filters (Category, Color, Price, Type, Discount)
-- Sort dropdown (Newest, Price)
-- Product grid with wishlist hearts
-- Clean minimal layout
+| Feature | Status |
+|---------|--------|
+| Collections Page | ✅ |
+| Working Filters | ✅ (Collection, Color, Price, Sale) |
+| Sort by Price | ✅ |
+| Cart System | ✅ |
+| Checkout (WhatsApp) | ✅ |
+| Checkout (Website) | ✅ |
+| Active Filter Badges | ✅ |
 
 ---
 
-## How to Use Admin Dashboard
+## Known Issues / TODO
 
-1. **Start dev server:** `npm run dev`
-2. **Login:** Go to `/admin/login`
-3. **Password:** `fazaya2026`
-4. **Manage products:** Add, edit, delete via Products page
-5. **Manage collections:** Add, edit, delete via Collections page
-6. **View orders/analytics:** Via respective menu items
+- None currently
 
-### Important Notes
-- Changes to products/collections are saved to JSON files instantly
-- Public pages (`/collections/all`) fetch live data from API
-- No server restart needed after admin changes
-- **Change the default password before deploying to production!**
+---
+
+## How to Continue
+
+1. **Pull latest:** `git pull origin master`
+2. **Install deps:** `npm install`
+3. **Run dev:** `npm run dev`
+4. **Admin login:** `/admin/login` → `fazaya2026`
 
 ---
 
 ## User Preferences
 
 - Logo: No `rounded-full`, use `w-auto` for aspect ratio
-- Collections page: Match clean design from `Idea1.jpg`
 - Data storage: JSON file (products < 50)
 - Auth: Simple password protection
+- Images: Cloud storage via Uploadthing
