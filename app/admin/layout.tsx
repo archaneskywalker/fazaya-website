@@ -122,19 +122,19 @@ export default function AdminLayout({
         />
       )}
 
+      {/* Top Bar with Toggle and Logo */}
+      <div className="fixed top-0 left-0 right-0 z-20 h-16 bg-card border-b flex items-center px-6">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 mr-3 bg-primary text-primary-foreground rounded-md shadow-lg"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <img src="/logo.png" alt="Fazaya" className="h-10 w-auto" />
+      </div>
+
       {/* Main Content */}
       <main className="min-h-screen">
-        {/* Toggle Sidebar Button - Fixed beside logo */}
-        <div className="fixed top-6 left-4 z-50 flex items-center gap-3">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 bg-primary text-primary-foreground rounded-md shadow-lg"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <img src="/logo.png" alt="Fazaya" className="w-10 h-10" />
-        </div>
-
         <div className="p-6 lg:p-8 pt-20">
           {children}
         </div>
