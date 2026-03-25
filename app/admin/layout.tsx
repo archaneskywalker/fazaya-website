@@ -118,7 +118,7 @@ export default function AdminLayout({
       )}
 
       {/* Main Content */}
-      <main style={{ marginLeft: '256px' }} className="min-h-screen">
+      <main className="pl-[256px] min-h-screen">
         <div className="p-6 lg:p-8">
           {children}
         </div>
