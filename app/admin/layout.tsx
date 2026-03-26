@@ -135,7 +135,7 @@ export default function AdminLayout({
 
       {/* Main Content */}
       <main className="min-h-screen">
-        <div className="p-6 lg:p-8 pt-24">
+        <div className="p-6 lg:p-8 pt-32">
           {children}
         </div>
       </main>
