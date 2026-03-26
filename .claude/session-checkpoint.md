@@ -28,15 +28,33 @@ Features:
 - Mobile-responsive with overlay drawer
 - Filter badge count on mobile button
 
-### 2. Admin Layout Fix ✅
+### 2. Admin Layout - Collapsible Sidebar ✅
 **File:** `app/admin/layout.tsx`
 
-Fixed sidebar overlapping content issue:
-- Main content uses `ml-64` to clear fixed sidebar
-- Sidebar content has `pt-16` to prevent being cut off at top
-- Proper z-index layering (sidebar z-30, mobile button z-50, overlay z-40)
+Collapsible sidebar implementation:
+- Sidebar hidden by default, slides in when toggled
+- Fixed top bar with menu button and logo
+- Close button (×) inside sidebar header
+- Dark overlay when sidebar is open (click to close)
+- No content overlapping issues
 
-### 3. Previous Session Work (Already Completed)
+### 3. Admin Pages - No Site Navbar/Footer ✅
+**File:** `components/SiteWrapper.tsx`, `app/layout.tsx`
+
+- Created SiteWrapper client component
+- Conditionally hides Navbar, Footer, WhatsApp on `/admin` routes
+- Admin pages have clean layout without site header/footer
+
+### 4. Bug Fixes
+
+#### Navbar Nested Button Error ✅
+**File:** `components/Navbar.tsx`
+- Added `asChild` to SheetTrigger to fix nested button hydration error
+- Fixed: "button cannot be a descendant of button"
+
+---
+
+## Previous Session Work (Already Completed)
 
 #### Checkout System via Website ✅
 **Files:** `app/keranjang/page.tsx`, `components/CheckoutModal.tsx`
@@ -83,11 +101,12 @@ fazaya-website-next/
 ├── components/
 │   ├── CheckoutModal.tsx        # Checkout form modal
 │   ├── CartContext.tsx          # Cart state management
+│   ├── SiteWrapper.tsx          # Conditional site layout wrapper
 │   └── ...
 ├── app/
 │   ├── admin/
 │   │   ├── login/page.tsx       # Login page
-│   │   ├── layout.tsx           # Admin layout with sidebar
+│   │   ├── layout.tsx           # Admin layout with collapsible sidebar
 │   │   ├── page.tsx             # Dashboard
 │   │   ├── products/            # Product CRUD
 │   │   ├── collections/         # Collection CRUD
@@ -98,6 +117,8 @@ fazaya-website-next/
 │   ├── collections/all/page.tsx # All products with filters
 │   ├── keranjang/page.tsx       # Cart with checkout
 │   └── ...
+├── components/
+│   └── SiteWrapper.tsx          # Client component for conditional layout
 └── middleware.ts                # Protect admin routes
 ```
 
@@ -124,6 +145,7 @@ UPLOADTHING_APP_ID=xxx
 | Order Management | ✅ (Accept/Cancel/Delete) |
 | Analytics | ✅ |
 | Image Upload (Cloud) | ✅ (Uploadthing) |
+| Collapsible Sidebar | ✅ |
 
 ---
 
@@ -162,3 +184,4 @@ UPLOADTHING_APP_ID=xxx
 - Data storage: JSON file (products < 50)
 - Auth: Simple password protection
 - Images: Cloud storage via Uploadthing
+- Admin sidebar: Collapsible popup style
