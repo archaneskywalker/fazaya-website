@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getAllProducts } from '@/lib/db/products';
+import { getAllOrders } from '@/lib/db/orders';
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get('admin-token')?.value;
@@ -9,20 +10,22 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const products = readJSON('products.json');
-    const orders = readJSON('orders.json');
+    const [products, orders] = await Promise.all([
+      getAllProducts(),
+      getAllOrders()
+    ]);
 
-    const totalRevenue = orders.reduce((sum: number, order: any) => {
+    const totalRevenue = orders.reduce((sum, order) => {
       return sum + (order.total || 0);
     }, 0);
 
     const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
 
     const topProducts = products
-      .filter((p: any) => p.sold && p.sold > 0)
-      .sort((a: any, b: any) => (b.sold || 0) - (a.sold || 0))
+      .filter((p) => p.sold && p.sold > 0)
+      .sort((a, b) => (b.sold || 0) - (a.sold || 0))
       .slice(0, 5)
-      .map((p: any) => ({
+      .map((p) => ({
         name: p.name,
         sold: p.sold || 0,
       }));

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { readJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getAllProducts } from '@/lib/db/products';
+import { getAllCollections } from '@/lib/db/collections';
+import { getAllOrders } from '@/lib/db/orders';
 import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -11,11 +13,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const products = readJSON('products.json');
-    const collections = readJSON('collections.json');
-    const orders = readJSON('orders.json');
+    const [products, collections, orders] = await Promise.all([
+      getAllProducts(),
+      getAllCollections(),
+      getAllOrders()
+    ]);
 
-    const totalRevenue = orders.reduce((sum, order: any) => {
+    const totalRevenue = orders.reduce((sum, order) => {
       return sum + (order.total || 0);
     }, 0);
 

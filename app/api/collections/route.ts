@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { readJSON } from '@/lib/storage';
+import { getAllCollections } from '@/lib/db/collections';
 
 export async function GET() {
   try {
-    const collections = readJSON('collections.json');
+    const collections = await getAllCollections();
     return NextResponse.json(collections);
   } catch (error) {
     console.error('Public collections API error:', error);

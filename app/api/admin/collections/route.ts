@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON, writeJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getAllCollections, createCollection } from '@/lib/db/collections';
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get('admin-token')?.value;
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const collections = readJSON('collections.json');
+    const collections = await getAllCollections();
     return NextResponse.json(collections);
   } catch (error) {
     console.error('Collections GET error:', error);
@@ -25,16 +25,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const collections = readJSON('collections.json');
-
-    const newCollection = {
-      ...body,
-      productCount: 0,
-    };
-
-    collections.push(newCollection);
-    writeJSON('collections.json', collections);
-
+    const newCollection = await createCollection(body);
     return NextResponse.json(newCollection, { status: 201 });
   } catch (error) {
     console.error('Collections POST error:', error);

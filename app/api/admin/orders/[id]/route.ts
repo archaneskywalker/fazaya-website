@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON, writeJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getOrderById, updateOrderStatus } from '@/lib/db/orders';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const token = request.cookies.get('admin-token')?.value;
@@ -11,28 +11,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   try {
     const { id } = await params;
     const body = await request.json();
-    const orders: any[] = readJSON('orders.json');
 
-    const index = orders.findIndex((o) => o.id === id);
-    if (index === -1) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
-    }
-
-    // Update allowed fields
     if (body.orderStatus) {
-      orders[index].orderStatus = body.orderStatus;
+      await updateOrderStatus(id, body.orderStatus);
     }
-    if (body.paymentStatus) {
-      orders[index].paymentStatus = body.paymentStatus;
-    }
-    if (body.notes) {
-      orders[index].adminNotes = body.notes;
-    }
-    orders[index].updatedAt = new Date().toISOString();
 
-    writeJSON('orders.json', orders);
-
-    return NextResponse.json({ success: true, order: orders[index] });
+    const order = await getOrderById(id);
+    return NextResponse.json({ success: true, order });
   } catch (error) {
     console.error('Order update error:', error);
     return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
@@ -47,8 +32,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   try {
     const { id } = await params;
-    const orders: any[] = readJSON('orders.json');
-    const order = orders.find((o) => o.id === id);
+    const order = await getOrderById(id);
 
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });

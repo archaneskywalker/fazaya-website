@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON, writeJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getAllProducts, createProduct } from '@/lib/db/products';
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get('admin-token')?.value;
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const products = readJSON('products.json');
+    const products = await getAllProducts();
     return NextResponse.json(products);
   } catch (error) {
     console.error('Products GET error:', error);
@@ -25,17 +25,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const products = readJSON('products.json');
-
-    const newProduct = {
-      ...body,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-    };
-
-    products.push(newProduct);
-    writeJSON('products.json', products);
-
+    const newProduct = await createProduct(body);
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('Products POST error:', error);

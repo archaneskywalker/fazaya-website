@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readJSON, writeJSON } from '@/lib/storage';
 import { verifyToken } from '@/lib/admin-auth';
+import { getProductById, updateProduct, deleteProduct } from '@/lib/db/products';
 
 export async function GET(
   request: NextRequest,
@@ -13,8 +13,7 @@ export async function GET(
 
   try {
     const { id } = await params;
-    const products: any[] = readJSON('products.json');
-    const product = products.find((p) => p.id === id);
+    const product = await getProductById(id);
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
@@ -39,18 +38,8 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const products: any[] = readJSON('products.json');
-
-    const index = products.findIndex((p) => p.id === id);
-    if (index === -1) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-    }
-
-    const updatedProduct = { ...products[index], ...body, updatedAt: new Date().toISOString() };
-    products[index] = updatedProduct;
-    writeJSON('products.json', products);
-
-    return NextResponse.json(products[index]);
+    const product = await updateProduct(id, body);
+    return NextResponse.json(product);
   } catch (error) {
     console.error('Product PUT error:', error);
     return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
@@ -68,14 +57,7 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    const products: any[] = readJSON('products.json');
-    const filteredProducts = products.filter((p) => p.id !== id);
-
-    if (filteredProducts.length === products.length) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-    }
-
-    writeJSON('products.json', filteredProducts);
+    await deleteProduct(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Product DELETE error:', error);
