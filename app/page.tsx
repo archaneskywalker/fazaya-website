@@ -12,22 +12,22 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function HomePage() {
-  let newProducts = [];
+  let productsToShow = [];
 
   try {
     // Fetch products from Supabase
     const allProducts = await getAllProducts();
     console.log('All products from Supabase:', allProducts.length);
-    console.log('Products with is_new:', allProducts.filter(p => p.is_new).length);
-    newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
+    // Show all products, not just new ones
+    productsToShow = allProducts.slice(0, 8);
   } catch (error) {
     // Fallback to static data if Supabase not configured
     console.log('Using fallback data:', error);
-    newProducts = products.filter(p => p.isNew).slice(0, 8);
+    productsToShow = products.slice(0, 8);
   }
 
   // Map snake_case to camelCase for components
-  const mappedProducts = newProducts.map(p => ({
+  const mappedProducts = productsToShow.map(p => ({
     id: p.id,
     name: p.name,
     slug: p.slug,
