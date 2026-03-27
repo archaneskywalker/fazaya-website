@@ -4,20 +4,52 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { BrandStory } from "@/components/BrandStory";
 import { Testimonials } from "@/components/Testimonials";
 import { InstagramTeaser } from "@/components/InstagramTeaser";
-import { collections, products } from "@/lib/data/products";
+import { products, collections } from "@/lib/data/products";
+import { getAllProducts } from "@/lib/db/products";
 
-// Force dynamic rendering to avoid @base-ui/react static generation issues
+// Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
-export default function HomePage() {
-  const newProducts = products.filter(p => p.isNew).slice(0, 8);
+export default async function HomePage() {
+  let newProducts = [];
+
+  try {
+    // Fetch products from Supabase
+    const allProducts = await getAllProducts();
+    newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
+  } catch (error) {
+    // Fallback to static data if Supabase not configured
+    console.log('Using fallback data:', error);
+    newProducts = products.filter(p => p.isNew).slice(0, 8);
+  }
+
+  // Map snake_case to camelCase for components
+  const mappedProducts = newProducts.map(p => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price: p.price,
+    originalPrice: p.original_price ?? undefined,
+    collection: p.collection,
+    colors: p.colors,
+    image: p.image,
+    images: p.images,
+    description: p.description,
+    material: p.material,
+    care: p.care,
+    size: p.size,
+    isNew: p.is_new,
+    isPromo: p.is_promo,
+    rating: p.rating ?? undefined,
+    sold: p.sold,
+  }));
 
   return (
     <>
       <HeroSection />
       <FeaturedCollections collections={collections} />
       <ProductGrid
-        products={newProducts}
+        products={mappedProducts}
         title="Produk Terbaru"
         viewAllHref="/collections/all"
       />
