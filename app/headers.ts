@@ -1,0 +1,6 @@
+// Cache control headers for Vercel
+export const noCacheHeaders = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+};
