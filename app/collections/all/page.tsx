@@ -38,7 +38,10 @@ export default function AllCollectionsPage() {
   const [showOnSaleOnly, setShowOnSaleOnly] = useState(false);
 
   useEffect(() => {
-    fetch("/api/products")
+    // Add timestamp to prevent caching
+    fetch("/api/products?t=" + Date.now(), {
+      cache: 'no-store',
+    })
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
