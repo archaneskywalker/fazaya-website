@@ -56,6 +56,7 @@ export default function NewProductPage() {
   };
 
   const handleUploadComplete = (res: any, isMain: boolean = false) => {
+    console.log('Upload complete:', res);
     if (res && res.length > 0) {
       const url = res[0].url;
       if (isMain) {
@@ -263,6 +264,7 @@ export default function NewProductPage() {
             <div className="flex gap-2">
               <input
                 type="text"
+                name="image"
                 value={formData.image}
                 onChange={handleChange}
                 className="flex-1 px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary"
@@ -312,8 +314,9 @@ export default function NewProductPage() {
                 type="text"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddImage()}
                 className="flex-1 px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Or paste image URL..."
+                placeholder="Or paste image URL, press Enter..."
               />
               <button
                 type="button"
