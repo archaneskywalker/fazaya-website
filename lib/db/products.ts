@@ -83,13 +83,28 @@ export async function createProduct(input: CreateProductInput): Promise<Product>
   if (!supabase) throw new Error('Supabase not configured');
 
   const product = {
-    ...input,
+    id: crypto.randomUUID(),
+    name: input.name,
+    slug: input.slug,
+    price: input.price,
     original_price: input.originalPrice ?? null,
+    collection: input.collection,
+    colors: input.colors || [],
+    image: input.image,
+    images: input.images || [],
+    description: input.description || '',
+    material: input.material || '',
+    care: input.care || '',
+    size: input.size || '115cm x 115cm',
     is_new: input.isNew,
     is_promo: input.isPromo,
+    rating: input.rating ?? null,
+    sold: input.sold ?? 0,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
+
+  console.log('Inserting product:', product);
 
   const { data, error } = await supabase
     .from('products')
@@ -97,7 +112,10 @@ export async function createProduct(input: CreateProductInput): Promise<Product>
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Supabase insert error:', error);
+    throw error;
+  }
   return data;
 }
 
