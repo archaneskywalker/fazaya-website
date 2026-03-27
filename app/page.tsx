@@ -7,8 +7,9 @@ import { InstagramTeaser } from "@/components/InstagramTeaser";
 import { products, collections } from "@/lib/data/products";
 import { getAllProducts } from "@/lib/db/products";
 
-// Force dynamic rendering
+// Force dynamic rendering with no caching
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   let newProducts = [];

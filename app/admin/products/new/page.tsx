@@ -56,9 +56,18 @@ export default function NewProductPage() {
   };
 
   const handleUploadComplete = (res: any, isMain: boolean = false) => {
-    console.log('Upload complete:', res);
-    if (res && res.length > 0) {
-      const url = res[0].url;
+    console.log('Upload complete response:', res);
+    if (!res || res.length === 0) {
+      console.error('Empty upload response');
+      return;
+    }
+
+    const file = res[0];
+    const url = file?.url || file?.fileUrl;
+
+    console.log('Extracted URL:', url);
+
+    if (url) {
       if (isMain) {
         setFormData((prev) => ({ ...prev, image: url }));
       } else {
@@ -330,10 +339,13 @@ export default function NewProductPage() {
             <UploadDropzone
               endpoint="productGallery"
               onClientUploadComplete={(res: any) => {
-                const urls = res.map((r: any) => r.url);
+                console.log('Gallery upload complete:', res);
+                const urls = res.map((r: any) => r.url || r.fileUrl).filter(Boolean);
+                console.log('Gallery URLs:', urls);
                 setImages((prev) => [...prev, ...urls]);
               }}
               onUploadError={(error: Error) => {
+                console.error('Upload error:', error);
                 setError(`Upload failed: ${error.message}`);
               }}
               appearance={{
