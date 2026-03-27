@@ -1,173 +1,117 @@
 # Fazaya Website - Session Checkpoint
 claude --resume 790701a5-e042-45f2-b222-e28440426171
 
-**Date:** 2026-03-26
+**Date:** 2026-03-27
 **Project:** Fazaya Hijab E-commerce (Next.js 14)
 **Repo:** https://github.com/archaneskywalker/fazaya-website
+**Vercel:** https://vercel.com/archaneskywalkers-projects/fazaya-website
+**Supabase:** https://supabase.com/dashboard/project/jrtjylpwepjgitvgnffn
 
 ---
 
 ## Completed in This Session
 
 ### 1. Supabase Database Migration ✅
+(Full migration from JSON file storage to Supabase PostgreSQL)
+
 **Files Created:**
 - `lib/supabase.ts` - Supabase client with graceful error handling
-- `lib/db/products.ts` - Product database operations
+- `lib/db/products.ts` - Product database operations (snake_case ↔ camelCase mapping)
 - `lib/db/collections.ts` - Collection database operations
 - `lib/db/orders.ts` - Order database operations
 - `supabase-schema.sql` - Database schema with RLS policies
+- `supabase-fix-policies.sql` - Fixed RLS policies for full access
 - `scripts/migrate-to-supabase.ts` - Data migration script
 - `SUPABASE_SETUP.md` - Setup documentation
 
 **Files Modified:**
-- `app/api/admin/products/route.ts` - Use Supabase instead of JSON
-- `app/api/admin/products/[id]/route.ts` - Use Supabase
-- `app/api/admin/collections/route.ts` - Use Supabase
-- `app/api/admin/collections/[id]/route.ts` - Use Supabase
-- `app/api/admin/orders/route.ts` - Use Supabase
-- `app/api/admin/orders/[id]/route.ts` - Use Supabase
-- `app/api/admin/stats/route.ts` - Use Supabase
-- `app/api/admin/analytics/route.ts` - Use Supabase
+- All `app/api/admin/**` routes - Use Supabase instead of JSON
 - `app/api/products/route.ts` - Public API uses Supabase
 - `app/api/collections/route.ts` - Public API uses Supabase
-- `.env.local` - Added Supabase credentials
 
 **Supabase Project:** https://supabase.com/dashboard/project/jrtjylpwepjgitvgnffn
 
-### 2. Admin Layout Fixes ✅
+### 2. Uploadthing Image Upload ✅
+**Files Modified:**
+- `lib/uploadthing-server.ts` - Fixed upload response to return file URL
+- `app/admin/products/new/page.tsx` - Fixed image input (added `name="image"`), improved upload handlers
 
-#### Button Cropped by Navbar
-**File:** `app/admin/layout.tsx`, `app/admin/products/page.tsx`
-- Increased top padding from `pt-20` to `pt-32` in layout
-- Added `mt-8` margin-top to products page wrapper
-- Fixed: "Add Product" button no longer cropped behind navbar
+**Uploadthing credentials configured in .env.local and Vercel**
 
----
+### 3. Homepage Shows All Products ✅
+**Files Modified:**
+- `app/page.tsx` - Fetch from Supabase, show all products (not just "new"), `revalidate = 0`
 
-## Previous Session Work (Already Completed)
+### 4. Product Detail Page Fixed ✅
+**Files Modified:**
+- `app/products/[slug]/page.tsx` - Fetch from Supabase instead of static JSON
 
-#### Working Filters on Collections Page ✅
-**File:** `app/collections/all/page.tsx`
-Full-featured filter system (Collection, Color, Price, Sale status)
+### 5. Cache-Busting for Auto-Update ✅
+**Files Created/Modified:**
+- `vercel.json` - Disable caching globally (no-store headers)
+- `app/api/products/route.ts` - Cache-Control headers on API response
+- `app/collections/all/page.tsx` - Client fetch with timestamp (`?t=Date.now()`)
 
-#### Admin Layout - Collapsible Sidebar ✅
-**File:** `app/admin/layout.tsx`
-Sidebar hidden by default, slides in when toggled
+**Result:** Products update immediately after creation - NO redeploy needed!
 
-#### Admin Pages - No Site Navbar/Footer ✅
-**File:** `components/SiteWrapper.tsx`
-Conditionally hides Navbar, Footer, WhatsApp on `/admin` routes
-
----
-
-## Current File Structure
-
-```
-fazaya-website-next/
-├── data/
-│   ├── products.json            # Product data (writable)
-│   ├── collections.json         # Collection data (writable)
-│   └── orders.json              # Order data (writable)
-├── lib/
-│   ├── supabase.ts              # Supabase client
-│   ├── db/
-│   │   ├── products.ts          # Product DB operations
-│   │   ├── collections.ts       # Collection DB operations
-│   │   └── orders.ts            # Order DB operations
-│   ├── storage.ts               # JSON file read/write utilities
-│   ├── admin-auth.ts            # JWT authentication
-│   ├── uploadthing-server.ts    # Uploadthing router config
-│   └── uploadthing.ts           # UploadButton/UploadDropzone components
-├── scripts/
-│   └── migrate-to-supabase.ts   # Data migration script
-├── supabase-schema.sql          # Database schema
-├── SUPABASE_SETUP.md            # Setup guide
-├── components/
-│   ├── CheckoutModal.tsx        # Checkout form modal
-│   ├── CartContext.tsx          # Cart state management
-│   ├── SiteWrapper.tsx          # Conditional site layout wrapper
-│   └── ...
-├── app/
-│   ├── admin/
-│   │   ├── login/page.tsx       # Login page
-│   │   ├── layout.tsx           # Admin layout with collapsible sidebar
-│   │   ├── page.tsx             # Dashboard
-│   │   ├── products/            # Product CRUD (Supabase)
-│   │   ├── collections/         # Collection CRUD (Supabase)
-│   │   ├── orders/page.tsx      # Orders with accept/cancel
-│   │   └── analytics/page.tsx   # Analytics
-│   ├── api/admin/               # Admin API routes (Supabase)
-│   ├── api/uploadthing/         # Uploadthing endpoint
-│   ├── collections/all/page.tsx # All products with filters
-│   ├── keranjang/page.tsx       # Cart with checkout
-│   └── ...
-└── middleware.ts                # Protect admin routes
-```
+### 6. Admin Layout Fixes ✅
+**Files Modified:**
+- `app/admin/layout.tsx` - Increased top padding to `pt-32`
+- `app/admin/products/page.tsx` - Added `mt-8` margin-top
 
 ---
 
-## Environment Variables (`.env.local`)
+## Environment Variables
 
+**`.env.local`:**
 ```
 ADMIN_PASSWORD=fazaya2026
 JWT_SECRET=super-secret-jwt-key-change-this-in-production
-UPLOADTHING_SECRET=sk_live_xxx
-UPLOADTHING_APP_ID=xxx
+UPLOADTHING_SECRET=sk_live_xxx  (your key from uploadthing.com)
+UPLOADTHING_APP_ID=c08qv9vipz
 NEXT_PUBLIC_SUPABASE_URL=https://jrtjylpwepjgitvgnffn.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=(your key from Supabase)
 ```
 
----
-
-## Admin Dashboard Features
-
-| Feature | Status |
-|---------|--------|
-| Login/Logout | ✅ |
-| Product CRUD | ✅ (Supabase) |
-| Collection CRUD | ✅ (Supabase) |
-| Order Management | ✅ (Supabase) |
-| Analytics | ✅ (Supabase) |
-| Image Upload (Cloud) | ✅ (Uploadthing) |
-| Collapsible Sidebar | ✅ |
-| Fixed Navbar Overlap | ✅ |
+**Vercel Environment Variables (REQUIRED for production):**
+- `NEXT_PUBLIC_SUPABASE_URL` = `https://jrtjylpwepjgitvgnffn.supabase.co`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` = (get from Supabase dashboard → Settings → API)
 
 ---
 
-## Public Features
+## How It Works Now
 
-| Feature | Status |
-|---------|--------|
-| Collections Page | ✅ |
-| Working Filters | ✅ (Collection, Color, Price, Sale) |
-| Sort by Price | ✅ |
-| Cart System | ✅ |
-| Checkout (WhatsApp) | ✅ |
-| Checkout (Website) | ✅ |
-| Active Filter Badges | ✅ |
+| Action | Result |
+|--------|--------|
+| Add product in admin | Appears on homepage immediately |
+| Refresh homepage | Fresh data from Supabase |
+| Click product | Detail page loads from Supabase |
+| Upload image | Stored on Uploadthing cloud |
+| Deploy to Vercel | Only needed for code changes |
 
 ---
 
-## Vercel Deployment
+## Known Issues / Notes
 
-**URL:** https://vercel.com/archaneskywalkers-projects/fazaya-website
+1. **Supabase policy error** - "policy already exists" error when running SQL is harmless (duplicate policy warning, not a failure)
 
-**Environment Variables Required:**
-- `ADMIN_PASSWORD`
-- `JWT_SECRET`
-- `UPLOADTHING_SECRET`
-- `UPLOADTHING_APP_ID`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+2. **Products only appear on homepage** - First 8 products shown (slice(0, 8))
+
+3. **Local dev** - Runs on http://localhost:3000 (or 3001 if 3000 busy)
 
 ---
 
-## How to Continue
+## How to Continue Next Session
 
 1. **Pull latest:** `git pull origin master`
 2. **Install deps:** `npm install`
 3. **Run dev:** `npm run dev`
-4. **Admin login:** `/admin/login` → `fazaya2026`
+4. **Admin login:** `/admin/login` → password: `fazaya2026`
+
+**For Vercel production:**
+- Add Supabase env vars if not already set
+- Changes auto-deploy on git push
+- No redeploy needed for product updates (fetches live from Supabase)
 
 ---
 
@@ -175,6 +119,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
 - Logo: No `rounded-full`, use `w-auto` for aspect ratio
 - Data storage: Supabase (production), JSON file fallback (local dev)
-- Auth: Simple password protection
+- Auth: Simple password protection (`fazaya2026`)
 - Images: Cloud storage via Uploadthing
 - Admin sidebar: Collapsible popup style
+- Homepage: Show ALL products (not just "new")
+- Auto-update: Products appear immediately without redeploy
