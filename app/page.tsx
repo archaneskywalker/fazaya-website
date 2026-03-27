@@ -17,6 +17,8 @@ export default async function HomePage() {
   try {
     // Fetch products from Supabase
     const allProducts = await getAllProducts();
+    console.log('All products from Supabase:', allProducts.length);
+    console.log('Products with is_new:', allProducts.filter(p => p.is_new).length);
     newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
   } catch (error) {
     // Fallback to static data if Supabase not configured
